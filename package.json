@@ -1,12 +1,18 @@
 {
-  "name": "login_all",
-  "version": "0.1.0",
+  "name": "vue_login_all",
+  "version": "0.1.4",
   "description": "description",
   "main": "dist/myLib.common.js",
+  "style": "dist/myLib.css",
+  "files": [
+    "dist/myLib.umd.js", "dist/demo.html"
+  ],
+
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "prepare": "vue-cli-service build --target lib --name myLib src/components/HelloWorld.vue"
   },
   "dependencies": {
     "core-js": "^2.6.5",
@@ -43,5 +49,16 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rackar/vue_login_all.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Rackar/vue_login_all/issues"
+  },
+  "homepage": "https://github.com/Rackar/vue_login_all#readme",
+  "author": "rackar",
+  "license": "MIT"
 }
