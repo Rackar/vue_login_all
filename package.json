@@ -1,11 +1,11 @@
 {
   "name": "vue_login_all",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "description",
   "main": "dist/myLib.common.js",
-  "style": "dist/myLib.css",
+
   "files": [
-    "dist/myLib.umd.js", "dist/demo.html"
+    "dist/myLib.umd.js", "dist/demo.html", "dist/myLib.css"
   ],
 
   "scripts": {
