@@ -1,7 +1,8 @@
 {
   "name": "login_all",
   "version": "0.1.0",
-  "private": true,
+  "description": "description",
+  "main": "dist/myLib.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
