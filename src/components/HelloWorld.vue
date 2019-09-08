@@ -1,20 +1,25 @@
 <template>
-  <div class="hello">login 登录
-    <br>
-    <link2 />
+  <div class="hello">
+    <div class="mainbutton" @click="isLoginShow=!isLoginShow">登录</div>
+    <br />
+    <login v-if="isLoginShow" />
   </div>
-
 </template>
 
 <script>
-import link2 from './link'
+import login from "./login";
 export default {
   name: "hello",
+  data() {
+    return {
+      isLoginShow: false
+    };
+  },
   props: {
     msg: String
   },
-  components:{
-    link2
+  components: {
+    login
   }
 };
 </script>
@@ -35,8 +40,9 @@ li {
 a {
   color: #42b983;
 }
-.hello{
-  color: red;
-  font-size: 32px;
+.mainbutton {
+  position: fixed;
+  top: 10px;
+  right: 20px;
 }
 </style>

@@ -3,11 +3,11 @@
   "version": "0.1.5",
   "description": "description",
   "main": "dist/myLib.common.js",
-
   "files": [
-    "dist/myLib.umd.js", "dist/demo.html", "dist/myLib.css"
+    "dist/myLib.umd.js",
+    "dist/demo.html",
+    "dist/myLib.css"
   ],
-
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "element-ui": "^2.12.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {
@@ -50,7 +51,6 @@
     "> 1%",
     "last 2 versions"
   ],
-
   "repository": {
     "type": "git",
     "url": "https://github.com/Rackar/vue_login_all.git"
