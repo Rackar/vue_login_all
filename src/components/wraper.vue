@@ -1,6 +1,9 @@
 <template>
   <div class="hello">
-    <div class="mainbutton" @click="isLoginShow=!isLoginShow">登录</div>
+    <div class="mainbutton" @click="isLoginShow=!isLoginShow">
+      <div class="avatar-abstract" style="background-image: url(&quot;/img/avatar.png&quot;);"></div>
+    </div>
+
     <br />
     <login v-if="isLoginShow" />
   </div>
@@ -44,5 +47,20 @@ a {
   position: fixed;
   top: 10px;
   right: 20px;
+}
+
+.avatar-abstract {
+  background-color: #fff;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  cursor: pointer;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-transition: opacity 0.4s linear;
+  transition: opacity 0.4s linear;
+  box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.15);
 }
 </style>

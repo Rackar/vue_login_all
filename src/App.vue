@@ -4,11 +4,7 @@
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     <div>页面内容</div>
     <div>页面内容</div>
-    <div>页面内容</div>
-    <div>页面内容</div>
-    <div>页面内容</div>
-    <div>页面内容</div>
-    <div>页面内容</div>
+
     <hello />
   </div>
 </template>
