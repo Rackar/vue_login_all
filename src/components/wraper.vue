@@ -1,6 +1,10 @@
 <template>
   <div class="hello">
-    <div class="mainbutton" @click="isLoginShow=!isLoginShow">
+    <div
+      class="mainbutton"
+      @click="isLoginShow=!isLoginShow"
+      @changeLoginStatus="changeLoginStatus"
+    >
       <div class="avatar-abstract" style="background-image: url(&quot;/img/avatar.png&quot;);"></div>
     </div>
 
@@ -15,7 +19,8 @@ export default {
   name: "hello",
   data() {
     return {
-      isLoginShow: false
+      isLoginShow: false,
+      isLogined: false
     };
   },
   props: {
@@ -23,6 +28,9 @@ export default {
   },
   components: {
     login
+  },
+  methods: {
+    changeLoginStatus() {}
   }
 };
 </script>
