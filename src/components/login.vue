@@ -2,7 +2,7 @@
   <div class="login">
     <!-- <div @click="goon">点击注册</div> -->
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane v-if="!userStatus.isLogin" label="登录" name="first">
+      <el-tab-pane v-if="!parentLogin" label="登录" name="first">
         <el-form
           :model="formLogin"
           status-icon
@@ -24,7 +24,7 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane v-if="!userStatus.isLogin" label="注册" name="second">
+      <el-tab-pane v-if="!parentLogin" label="注册" name="second">
         <el-form
           :model="formSignup"
           status-icon
@@ -51,7 +51,7 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane v-if="!userStatus.isLogin" label="找回密码" name="third">
+      <el-tab-pane v-if="!parentLogin" label="找回密码" name="third">
         <el-form
           :model="formForget"
           status-icon
@@ -70,7 +70,11 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane v-if="userStatus.isLogin" label="个人信息" name="fourth">信息，设置，权限</el-tab-pane>
+      <el-tab-pane v-if="parentLogin" label="个人信息" name="fourth">
+        <div>信息，设置，权限</div>
+
+        <el-button @click="logout">登出</el-button>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -95,11 +99,29 @@ export default {
         callback();
       }
     };
-    var checkUsername = (rule, value, callback) => {
+    var checkUsername = async (rule, value, callback) => {
       if (!value) {
         return callback(new Error("用户名不能为空"));
       } else {
-        callback();
+        // async function checkcheck() {
+        //   let va = await this.checkUsernameExist();
+        //   console.log(va);
+        // }
+        // checkcheck();
+        var x = await this.checkUsernameExist();
+        console.log(x);
+        if (false) {
+          callback(new Error("用户名重复"));
+        } else {
+          callback();
+        }
+        // setTimeout(() => {
+        //   if (false) {
+        //     callback();
+        //   } else {
+        //     return callback(new Error("用户名重复"));
+        //   }
+        // }, 100);
       }
     };
     var checkAge = (rule, value, callback) => {
@@ -170,13 +192,21 @@ export default {
       }
     };
   },
+  computed: {
+    parentLogin() {
+      return this.$parent.isLogined;
+    }
+  },
+  mounted() {
+    this.initFormData();
+  },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           var formBodyData = {};
-          alert("验证通过");
-          this.userStatus.isLogin = true;
+          // this.userStatus.isLogin = true;
+
           if (formName == "formLogin") {
             this.login();
           } else if (formName == "formSignup") {
@@ -190,11 +220,50 @@ export default {
         }
       });
     },
-    login() {},
+    login() {
+      this.$axios
+        .post("login", {
+          username: this.formLogin.username,
+          password: this.formLogin.pass
+        })
+        .then(res => {
+          console.log(res);
+          if (res.data.status) {
+            this.$mess.success("登录成功");
+            this.$emit("changeLoginStatus");
+            this.activeName = "fourth";
+          } else {
+            this.$mess.error("用户或密码错误");
+          }
+        });
+    },
     signup() {},
+    checkUsernameExist() {
+      var az = this.$axios
+        .post("user_exsit", {
+          username: this.formSignup.username
+        })
+        .then(res => {
+          console.log(res);
+          return Promise.resolve(res.data);
+          // (ress => {
+          //   ress(res.data);
+          // });
+        });
+      return az;
+    },
+
     forget() {},
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    logout() {
+      this.$emit("changeLoginStatus");
+      this.activeName = "first";
+    },
+    initFormData() {
+      if (this.$parent.isLogined) this.activeName = "fourth";
+      else this.activeName = "first";
     },
     handleClick(tab, event) {
       console.log(tab, event);
@@ -209,5 +278,8 @@ export default {
   position: absolute;
   top: 20%;
   left: 40%;
+  padding: 20px 30px 20px 20px;
+
+  border: 1px solid rgb(238, 236, 236);
 }
 </style>

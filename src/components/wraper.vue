@@ -1,15 +1,11 @@
 <template>
   <div class="hello">
-    <div
-      class="mainbutton"
-      @click="isLoginShow=!isLoginShow"
-      @changeLoginStatus="changeLoginStatus"
-    >
+    <div class="mainbutton" @click="isLoginShow=!isLoginShow">
       <div class="avatar-abstract" style="background-image: url(&quot;/img/avatar.png&quot;);"></div>
     </div>
 
     <br />
-    <login v-if="isLoginShow" />
+    <login v-if="isLoginShow" @changeLoginStatus="changeLoginStatus" />
   </div>
 </template>
 
@@ -30,7 +26,10 @@ export default {
     login
   },
   methods: {
-    changeLoginStatus() {}
+    changeLoginStatus() {
+      // debugger;
+      this.isLogined = !this.isLogined;
+    }
   }
 };
 </script>
