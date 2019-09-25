@@ -42,8 +42,8 @@
           <el-form-item label="确认密码" prop="checkPass">
             <el-input type="password" v-model="formSignup.checkPass" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="年龄" prop="age">
-            <el-input v-model.number="formSignup.age"></el-input>
+          <el-form-item label="手机号" prop="phone">
+            <el-input v-model.number="formSignup.phone"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('formSignup')">提交</el-button>
@@ -108,12 +108,12 @@ export default {
         //   console.log(va);
         // }
         // checkcheck();
-        var x = await this.checkUsernameExist();
-        console.log(x);
-        if (false) {
-          callback(new Error("用户名重复"));
-        } else {
+        var notExist = await this.checkUsernameExist();
+
+        if (notExist) {
           callback();
+        } else {
+          callback(new Error("用户名重复"));
         }
         // setTimeout(() => {
         //   if (false) {
@@ -124,21 +124,18 @@ export default {
         // }, 100);
       }
     };
-    var checkAge = (rule, value, callback) => {
+    var checkPhone = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("年龄不能为空"));
-      }
-      setTimeout(() => {
-        if (!Number.isInteger(value)) {
-          callback(new Error("请输入数字值"));
+        return callback(new Error("手机号不能为空"));
+      } else if (!Number.isInteger(value)) {
+        callback(new Error("手机号格式错误"));
+      } else {
+        if (value < 10000000000 || value > 19999999999) {
+          callback(new Error("手机号格式错误"));
         } else {
-          if (value < 18) {
-            callback(new Error("必须年满18岁"));
-          } else {
-            callback();
-          }
+          callback();
         }
-      }, 100);
+      }
     };
     var validatePass = (rule, value, callback) => {
       if (value === "") {
@@ -164,14 +161,14 @@ export default {
         username: "",
         pass: "",
         checkPass: "",
-        age: ""
+        phone: ""
       },
       activeName: "first",
       rulesSignup: {
         username: [{ validator: checkUsername, trigger: "blur" }],
         pass: [{ validator: validatePass, trigger: "blur" }],
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
-        age: [{ validator: checkAge, trigger: "blur" }]
+        phone: [{ validator: checkPhone, trigger: "blur" }]
       },
       formLogin: {
         username: "",
@@ -237,20 +234,34 @@ export default {
           }
         });
     },
-    signup() {},
+    signup() {
+      this.$axios
+        .post("register", {
+          username: this.formSignup.username,
+          password: this.formSignup.pass,
+          phone: this.formSignup.phone
+        })
+        .then(res => {
+          console.log(res);
+          if (res.data.status) {
+            this.$mess.success("注册申请已提交，等待审批");
+            this.activeName = "first";
+          } else {
+            this.$mess.error(res.data.error);
+          }
+        });
+    },
     checkUsernameExist() {
-      var az = this.$axios
+      return this.$axios
         .post("user_exsit", {
           username: this.formSignup.username
         })
         .then(res => {
           console.log(res);
-          return Promise.resolve(res.data);
-          // (ress => {
-          //   ress(res.data);
-          // });
+          return new Promise(resolve => {
+            resolve(res.data.status);
+          });
         });
-      return az;
     },
 
     forget() {},
